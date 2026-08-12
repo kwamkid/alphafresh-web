@@ -9,3 +9,8 @@
 # build/scratch
 node_modules/
 *.log
+
+# Workers-only config, not used by Cloudflare Pages
+wrangler.jsonc
+.assetsignore
+_gitlocks/
