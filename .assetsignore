@@ -1,0 +1,7 @@
+# Files kept in the repo but never published to the web
+build.py
+README.md
+.gitignore
+.assetsignore
+wrangler.jsonc
+_gitlocks/
