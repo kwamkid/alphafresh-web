@@ -26,17 +26,41 @@ _headers        Cloudflare Pages cache rules
 _redirects      Pretty URLs (/about → /about.html)
 ```
 
-## Editing
+## How the pages are built
 
-Both languages live in the same markup. Each phrase is a pair:
+The five HTML files are **generated**, not hand-written. `build.py` holds the
+header, the footer, the call-to-action band and the page shell **once**, and
+writes them into every page:
 
-```html
-<span data-th>ลำไยสด</span><span data-en>Fresh longan</span>
+```
+python3 build.py        # rewrites all five .html files
 ```
 
-CSS hides whichever language is not active, so **edit both halves** or one
-language will silently fall out of date. English is the default on first visit;
-the visitor's choice is then remembered in `localStorage`.
+So to change the menu, the footer or anything that repeats, edit `build.py` and
+run it — never edit the same block in five files. `translations.py` holds the
+Chinese and Arabic text plus the trade-term glossary, keyed by the English
+string; anything missing there falls back to English automatically.
+
+```
+build.py          nav, footer, CTA band, <head>, page bodies, harvest calendar
+translations.py   zh + ar for every phrase, the glossary, per-page meta text
+```
+
+## Editing
+
+All four languages live in the same markup. Each phrase is written once in
+`build.py` as `L("ไทย", "English")`; the Chinese and Arabic come from
+`translations.py`, and the generator wraps them together:
+
+```html
+<span class="i18n"><span data-en>Fresh longan</span><span data-th>ลำไยสด</span>
+<span data-zh>新鲜龙眼</span><span data-ar dir="rtl">لونجان طازج</span></span>
+```
+
+CSS shows only the active language and falls back to English where a
+translation is missing. English is the default on first visit; the visitor's
+choice is then remembered in `localStorage`. Arabic switches the page to
+right-to-left, but the header deliberately stays left-to-right.
 
 The harvest calendar is generated from twelve-character bands, one per fruit —
 `#` peak, `-` in season, `.` out of season, January to December.

@@ -4,19 +4,62 @@
 (function () {
   'use strict';
 
-  /* ---------- language ---------- */
+  /* ---------- language ----------
+     Four languages share one document. The markup is English; the other three
+     titles and descriptions ride along in <meta name="title-xx"> so search
+     engines still get the right text for whichever language a visitor picks. */
   var root = document.documentElement;
+  var LANGS = ['en', 'th', 'zh', 'ar'];
+
+  function meta(name) {
+    var el = document.querySelector('meta[name="' + name + '"]');
+    return el ? el.getAttribute('content') : '';
+  }
+  var TITLE = { en: document.title };
+  var DESC = { en: meta('description') };
+  LANGS.slice(1).forEach(function (l) {
+    TITLE[l] = meta('title-' + l) || TITLE.en;
+    DESC[l] = meta('description-' + l) || DESC.en;
+  });
+
   function setLang(l) {
+    if (LANGS.indexOf(l) === -1) l = 'en';
     root.lang = l;
     root.dataset.lang = l;
-    var th = document.getElementById('btn-th'), en = document.getElementById('btn-en');
-    if (th) th.classList.toggle('on', l === 'th');
-    if (en) en.classList.toggle('on', l === 'en');
+    root.dir = l === 'ar' ? 'rtl' : 'ltr';       /* Arabic reads right to left */
+    document.title = TITLE[l];
+    var d = document.querySelector('meta[name="description"]');
+    if (d) d.setAttribute('content', DESC[l]);
+    document.querySelectorAll('.lang-opt').forEach(function (b) {
+      b.setAttribute('aria-selected', b.dataset.setLang === l ? 'true' : 'false');
+    });
     try { localStorage.setItem('af_lang', l); } catch (e) {}
   }
   window.setLang = setLang;
+
+  var picker = document.getElementById('langpick');
+  if (picker) {
+    var trigger = picker.querySelector('.lang-btn');
+    function closeLang() {
+      picker.classList.remove('open');
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+    trigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = picker.classList.toggle('open');
+      trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    picker.querySelectorAll('.lang-opt').forEach(function (b) {
+      b.addEventListener('click', function () { setLang(b.dataset.setLang); closeLang(); });
+    });
+    document.addEventListener('click', closeLang);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeLang(); });
+  }
+
   /* English is the default; a visitor's own choice is remembered from then on. */
-  try { var saved = localStorage.getItem('af_lang'); if (saved) setLang(saved); } catch (e) {}
+  var start = 'en';
+  try { start = localStorage.getItem('af_lang') || 'en'; } catch (e) {}
+  setLang(start);
 
   /* ---------- sticky nav ---------- */
   var nav = document.querySelector('.nav');
