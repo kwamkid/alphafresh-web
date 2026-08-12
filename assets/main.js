@@ -138,21 +138,29 @@
   paint();
   timer = setTimeout(function () { go(1); }, 6000);
 
-  /* Load video only on wider screens, when motion is welcome and data isn't saved. */
+  /* Video plays on phones too. On a narrow screen only the first clip is
+     fetched and looped — three clips would be a lot of mobile data for a
+     background that is mostly hidden behind the headline anyway. */
   var saveData = navigator.connection && navigator.connection.saveData === true;
-  if (!reduce && window.innerWidth > 760 && !saveData) {
+  if (!reduce && !saveData) {
+    var small = window.innerWidth <= 760;
+    var list = small ? vids.slice(0, 1) : vids;
+    if (small) { vids[0].loop = true; }
     var switched = false;
-    vids.forEach(function (v) {
-      v.addEventListener('ended', function () { if (mode === 'vid') go(i + 1); });
+    list.forEach(function (v) {
+      v.addEventListener('ended', function () { if (mode === 'vid' && !small) go(i + 1); });
       v.addEventListener('canplay', function () {
         if (switched) return;
         switched = true;
         mode = 'vid'; i = 0;
+        vids = list;                       /* the dots follow whatever is loaded */
         media.classList.add('video-on');
+        if (small && dots) dots.style.display = 'none';
         paint();
       }, { once: true });
       v.src = v.dataset.src;
       v.load();
     });
   }
+
 })();

@@ -354,7 +354,7 @@ footer a:hover{color:#fff}
   .lang-now{display:none}
   .logo-mark{width:45px;height:46px}
   .logo-text small{font-size:10.5px;letter-spacing:.34em}
-  .hero{min-height:auto;padding-top:112px}
+  .hero{min-height:88vh;padding-top:112px}
   .hero-in{padding:0 18px 44px}
   .hero h1 .script{font-size:1.16em;line-height:.95}
   .hero-dots{right:18px;bottom:18px}
