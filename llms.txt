@@ -11,18 +11,18 @@ Terms: EXW, FOB, CFR, CIF (Incoterms 2020)
 
 ## Pages
 
-- [Home](https://alphafresh.com/): what the company does, headline
+- [Home](https://alphafreshthailand.com/): what the company does, headline
   figures, the four products, and the five steps of an order.
-- [About](https://alphafresh.com/about.html): the importer-to-exporter
+- [About](https://alphafreshthailand.com/about.html): the importer-to-exporter
   story, what the company handles itself (grading, cold room, documents and
   loading), and the orchard network.
-- [Products](https://alphafresh.com/products.html): the full longan
+- [Products](https://alphafreshthailand.com/products.html): the full longan
   specification table and grade breakdown, durian, mangosteen and lychee, and a
   harvest calendar for thirteen Thai fruits.
-- [Quality & Export](https://alphafresh.com/quality.html): how an order
+- [Quality & Export](https://alphafreshthailand.com/quality.html): how an order
   runs, certifications, residue testing, cold chain, Incoterms, payment terms
   and target markets.
-- [Contact](https://alphafresh.com/contact.html): quotation request form
+- [Contact](https://alphafreshthailand.com/contact.html): quotation request form
   and direct contact details.
 
 ## Products

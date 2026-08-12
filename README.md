@@ -1,4 +1,4 @@
-# alphafresh.com
+# alphafreshthailand.com
 
 Static marketing site for **Alpha Fresh Co., Ltd.** (บริษัท อัลฟ่า เฟรช จำกัด) —
 a small longan packing shed in Lamphun exporting Thai fruit.
