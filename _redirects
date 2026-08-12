@@ -1,5 +1,0 @@
-# Pretty URLs: /about → /about.html
-/about      /about.html      200
-/products   /products.html   200
-/quality    /quality.html    200
-/contact    /contact.html    200
