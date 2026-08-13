@@ -2,7 +2,7 @@
 # Long cache for assets that rarely change; short for HTML so edits go live fast.
 
 /images/*
-  Cache-Control: public, max-age=604800
+  Cache-Control: public, max-age=2592000
 
 /videos/*
   Cache-Control: public, max-age=2592000

@@ -473,6 +473,11 @@ footer a:hover{color:#fff}
 }
 
 /* ---------- trade-term tooltips ---------- */
+/* A hidden tooltip still counts toward the page's scroll width, so one sitting
+   near the right edge was widening the document by a few pixels. `clip` stops
+   that without turning the page into a scroll container the way `hidden` does,
+   so the sticky header keeps working. */
+html{overflow-x:clip}
 .term{position:relative;cursor:help;border-bottom:1px dashed currentColor;
   text-decoration:none;outline:none}
 .term:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
@@ -492,6 +497,9 @@ html[dir="rtl"] .tip{text-align:right}
 .stat .tip,.mkc .tip{left:0;transform:translateX(0) translateY(4px)}
 .stat .term:hover .tip,.stat .term:focus .tip{transform:translateX(0)}
 .stat .tip::after,.mkc .tip::after{left:28px}
+/* the last stat sits against the right edge, so its bubble opens leftward */
+.stat:last-child .tip{left:auto;right:0}
+.stat:last-child .tip::after{left:auto;right:28px}
 .stats .term{border-bottom-color:rgba(255,255,255,.5)}
 
 /* ---------- market flags ---------- */

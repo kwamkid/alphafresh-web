@@ -173,16 +173,26 @@
     if (document.readyState === 'complete') go();
     else window.addEventListener('load', go, { once: true });
   }
-  afterLoad(function () {
-    slides.forEach(function (s) { if (s.dataset.src) s.src = s.dataset.src; });
-    /* start cycling only once there is a second photo to cycle to */
+  /* On a phone the hero is one photo and one looping clip. Fetching two more
+     full-bleed photos for a slider that sits behind the headline is a lot of
+     mobile data for something almost nobody watches, and those downloads were
+     crowding out everything else on the page. Wide screens keep the slider. */
+  var phone = window.innerWidth <= 760;
+  if (phone) {
+    if (dots) dots.style.display = 'none';
     clearTimeout(timer);
-    timer = setTimeout(function () { go(i + 1); }, 6000);
-  });
+  } else {
+    afterLoad(function () {
+      slides.forEach(function (s) { if (s.dataset.src) s.src = s.dataset.src; });
+      /* start cycling only once there is a second photo to cycle to */
+      clearTimeout(timer);
+      timer = setTimeout(function () { go(i + 1); }, 6000);
+    });
+  }
 
   var saveData = navigator.connection && navigator.connection.saveData === true;
   if (!reduce && !saveData) {
-    var small = window.innerWidth <= 760;
+    var small = phone;
     var list = small ? vids.slice(0, 1) : vids;
     if (small) list[0].loop = true;
     /* clips 2 and 3 only start downloading once clip 1 is on screen, so the

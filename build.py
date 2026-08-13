@@ -10,20 +10,20 @@ FONT_CSS = ("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@40
 
 MEDIA_HOST = "https://d2ol7oe51mr4n9.cloudfront.net"
 MEDIA = f"{MEDIA_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
-CDN_HOST = "https://d8j0ntlcm91z4.cloudfront.net"
-CDN = f"{CDN_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
+# Every image is now served from our own domain — nothing is fetched
+# from a third-party CDN any more.
 IMG = {
     "orchard":    "images/thai-longan-orchard-lamphun.webp",
-    "hands":      f"{CDN}/hf_20260811_110015_e304dec3-f7da-41de-9a27-9fc365e45eb3_min.webp",
+    "hands":  "images/longan-hand-picking.webp",
     "shedfront":  "images/longan-packing-house-lamphun.webp",
-    "sorting":    f"{CDN}/hf_20260811_114420_3a339d7e-719c-4a9d-b678-feaeee3a3a9d_min.webp",
-    "qc":         f"{CDN}/hf_20260811_114420_8193e3ed-9d2b-4ef2-abc2-fc591f266d18_min.webp",
-    "cold":       f"{CDN}/hf_20260811_114420_71d6a95f-de45-4523-b6b9-4876e7e4b8c2_min.webp",
-    "loading":    f"{CDN}/hf_20260811_114420_0779c7f0-58c0-4a41-9f2c-c5e4682101a8_min.webp",
-    "longanpack": f"{CDN}/hf_20260811_052447_734999bf-1648-42c3-9893-7fe6b42e4d21_min.webp",
-    "durian":     f"{CDN}/hf_20260811_052447_ae3da5d0-e8f7-4c95-a6a0-f2465b05da01_min.webp",
-    "mangosteen": f"{CDN}/hf_20260811_052446_14008918-4bf0-4560-bca0-c6ac527c3109_min.webp",
-    "lychee":     f"{CDN}/hf_20260811_052447_93f578de-ea79-4568-bc1c-225d66b3df2f_min.webp",
+    "sorting":  "images/longan-hand-sorting.webp",
+    "qc":  "images/longan-quality-inspection.webp",
+    "cold":  "images/longan-cold-room.webp",
+    "loading":  "images/refrigerated-container-loading.webp",
+    "longanpack":  "images/longan-export-carton.webp",
+    "durian":  "images/thai-durian-monthong.webp",
+    "mangosteen":  "images/thai-mangosteen.webp",
+    "lychee":  "images/thai-lychee.webp",
 }
 # Hero clips, re-encoded to 1280px H.264 without audio: 59.9 MB became 3.6 MB.
 # "mobile" is a 720px cut for phones.
@@ -107,8 +107,8 @@ def nav(current):
   <div class="nav-in">
     <a class="logo" href="index.html" aria-label="Alpha Fresh — home">
       <span class="logo-mark">
-        <img class="l-white" src="images/logo-icon-white.png" alt="" aria-hidden="true">
-        <img class="l-dark" src="images/logo-icon.png" alt="" aria-hidden="true">
+        <img class="l-white" src="images/logo-icon-white.webp" alt="" aria-hidden="true">
+        <img class="l-dark" src="images/logo-icon.webp" alt="" aria-hidden="true">
       </span>
       <span class="logo-text">Alpha<small>Fresh</small></span>
     </a>
@@ -141,7 +141,7 @@ FOOTER = f"""<footer>
   <div class="wrap">
     <div class="fgrid">
       <div>
-        <div class="flogo"><img src="images/logo-stack-white.png" alt="Alpha Fresh" width="146" height="128"></div>
+        <div class="flogo"><img src="images/logo-stack-white.webp" alt="Alpha Fresh" width="146" height="128"></div>
         <p style="color:rgba(255,255,255,.55);margin:0;max-width:34ch">
           {L("บริษัท อัลฟ่า เฟรช จำกัด — นำเข้าและส่งออกผลไม้สด ลำพูน ประเทศไทย",
              "Alpha Fresh Co., Ltd. — fresh fruit import &amp; export. Lamphun, Thailand.")}</p>
@@ -249,7 +249,6 @@ def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th="", p
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="dns-prefetch" href="{CDN_HOST}">
 <!-- The font sheet lives on another origin, so fetching it normally costs a DNS
      lookup and a TLS handshake before anything can paint. Loading it as a
      preload and promoting it to a stylesheet once it arrives keeps it off the
@@ -319,19 +318,19 @@ SEASON = [
 ]
 # Square catalogue shots, one per fruit, keyed to the SEASON rows below.
 FRUIT_PIC = {
-    "Longan":              f"{CDN}/hf_20260812_073051_0052cde6-5532-415a-84c1-762d16808c7d_min.webp",
-    "Durian":              f"{CDN}/hf_20260812_073051_a1bb181a-558a-409f-b7d0-3727b1198521_min.webp",
-    "Mangosteen":          f"{CDN}/hf_20260812_073052_6de7ee00-b50f-4347-ac37-6b43c628305d_min.webp",
-    "Lychee":              f"{CDN}/hf_20260812_073051_91456ac4-10aa-46be-81f4-bac2db66bca7_min.webp",
-    "Rambutan":            f"{CDN}/hf_20260812_073052_fc3a13c8-5ae7-49b2-9abc-6f2975795c3d_min.webp",
-    "Longkong":            f"{CDN}/hf_20260812_073052_182bd563-65e1-4f24-ae13-8948b5b95e48_min.webp",
-    "Mango (Nam Dok Mai)": f"{CDN}/hf_20260812_073051_4c63f0cd-521b-4da6-83ba-ea1dc6dd9bd4_min.webp",
-    "Pomelo":              f"{CDN}/hf_20260812_073052_5dd794fb-c71b-4e0f-8bb7-069c3226157c_min.webp",
-    "Dragon fruit":        f"{CDN}/hf_20260812_073052_17ab8e20-6110-479e-af87-f81b0ebc877e_min.webp",
-    "Jackfruit":           f"{CDN}/hf_20260812_073052_becea2ff-29fb-4fe1-8931-51308b0380d2_min.webp",
-    "Pineapple":           f"{CDN}/hf_20260812_073052_79ffe642-2041-4b81-ac57-a67f0823b62d_min.webp",
-    "Young coconut":       f"{CDN}/hf_20260812_073051_1923ce00-e752-438e-a9ab-7c7ea9e09126_min.webp",
-    "Sweet tamarind":      f"{CDN}/hf_20260812_073237_5843bb4e-8abf-434f-9a5c-c9420bec6777_min.webp",
+    "Longan":  "images/fruit-longan.webp",
+    "Durian":  "images/fruit-durian.webp",
+    "Mangosteen":  "images/fruit-mangosteen.webp",
+    "Lychee":  "images/fruit-lychee.webp",
+    "Rambutan":  "images/fruit-rambutan.webp",
+    "Longkong":  "images/fruit-longkong.webp",
+    "Mango (Nam Dok Mai)":  "images/fruit-mango-nam-dok-mai.webp",
+    "Pomelo":  "images/fruit-pomelo.webp",
+    "Dragon fruit":  "images/fruit-dragon-fruit.webp",
+    "Jackfruit":  "images/fruit-jackfruit.webp",
+    "Pineapple":  "images/fruit-pineapple.webp",
+    "Young coconut":  "images/fruit-young-coconut.webp",
+    "Sweet tamarind":  "images/fruit-sweet-tamarind.webp",
 }
 
 MONTHS_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
