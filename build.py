@@ -5,12 +5,14 @@ import hashlib
 import os
 from translations import TR, MONTHS, META, GLOSSARY
 
+MEDIA_HOST = "https://d2ol7oe51mr4n9.cloudfront.net"
+MEDIA = f"{MEDIA_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 CDN_HOST = "https://d8j0ntlcm91z4.cloudfront.net"
 CDN = f"{CDN_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 IMG = {
-    "orchard":    f"{CDN}/hf_20260811_110015_a5b428e7-7883-4cb1-9cd3-5f63b3db2cce_min.webp",
+    "orchard":    f"{MEDIA}/91e6c249-4e70-4a48-8bc8-f88a4446dc6d.webp",
     "hands":      f"{CDN}/hf_20260811_110015_e304dec3-f7da-41de-9a27-9fc365e45eb3_min.webp",
-    "shedfront":  f"{CDN}/hf_20260811_215043_c5e588ce-d5d1-4d2f-ade1-878b15b04677_min.webp",
+    "shedfront":  f"{MEDIA}/4a5121f2-b099-474b-9223-3425b4fc478d.webp",
     "sorting":    f"{CDN}/hf_20260811_114420_3a339d7e-719c-4a9d-b678-feaeee3a3a9d_min.webp",
     "qc":         f"{CDN}/hf_20260811_114420_8193e3ed-9d2b-4ef2-abc2-fc591f266d18_min.webp",
     "cold":       f"{CDN}/hf_20260811_114420_71d6a95f-de45-4523-b6b9-4876e7e4b8c2_min.webp",
@@ -22,8 +24,6 @@ IMG = {
 }
 # Hero clips, re-encoded to 1280px H.264 without audio: 59.9 MB became 3.6 MB.
 # "mobile" is a 720px cut for phones.
-MEDIA_HOST = "https://d2ol7oe51mr4n9.cloudfront.net"
-MEDIA = f"{MEDIA_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 VID = {
     "orchard": f"{MEDIA}/bcfffac1-b84f-49c4-89cf-100158c87261.mp4",
     "shed":    f"{MEDIA}/fe4bdcf4-5a92-49ec-a72b-685eb684d825.mp4",
@@ -246,8 +246,8 @@ def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th="", p
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="{CDN_HOST}">
-<link rel="dns-prefetch" href="{MEDIA_HOST}">
+<link rel="preconnect" href="{MEDIA_HOST}">
+<link rel="dns-prefetch" href="{CDN_HOST}">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="images/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -416,8 +416,8 @@ SEASON_SECTION = f"""<section class="soft" id="season">
 home = f"""<header class="hero">
   <div class="hero-media" id="heroMedia">
     <img class="hero-slide on" src="{IMG['orchard']}" alt="สวนลำไยภาคเหนือยามเช้า" fetchpriority="high">
-    <img class="hero-slide" data-src="images/real-branch.jpg" alt="ลำไยสดบนต้น" decoding="async">
-    <img class="hero-slide" data-src="images/real-crates2.jpg" alt="ลำไยคัดเกรดในตะกร้า" decoding="async">
+    <img class="hero-slide" data-src="images/real-branch.webp" alt="ลำไยสดบนต้น" decoding="async">
+    <img class="hero-slide" data-src="images/real-crates2.webp" alt="ลำไยคัดเกรดในตะกร้า" decoding="async">
     <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['orchard']}" data-src-small="{VID['mobile']}"></video>
     <video class="hero-vid" muted playsinline preload="none" data-src="{VID['shed']}"></video>
     <video class="hero-vid" muted playsinline preload="none" data-src="{VID['line']}"></video>
@@ -463,7 +463,7 @@ home = f"""<header class="hero">
       <h2>{L("ลำไยเป็นตัวหลัก และผลไม้ไทยอีก 3 ชนิดตามฤดู", "Longan first, and three more Thai fruits in season")}</h2>
     </div>
     <div class="grid-4 rv g2m">
-      <a class="card" href="products.html#longan"><img src="images/real-crates1.jpg" alt="ลำไย" loading="lazy">
+      <a class="card" href="products.html#longan"><img src="images/real-crates1.webp" alt="ลำไย" loading="lazy">
         <div class="card-b"><h3>{L("ลำไยสด", "Fresh longan")}</h3>
           <p>{L("อีดอ · ดอ · เบี้ยวเขียว · เกรด AA–C · ก.ค.–ก.ย. และนอกฤดู", "E-Daw · Daw · Biew Kiew · grades AA–C · Jul–Sep plus off-season")}</p>
           <span class="more">{L("ดูสเปกเต็ม", "Full specification")} {ARROW}</span></div></a>
@@ -564,7 +564,7 @@ about = f"""{phead("เกี่ยวกับเรา", "About", "จาก�
 <section>
   <div class="wrap split flip rv">
     <div class="split-media">
-      <img src="images/real-tree.jpg" alt="สวนลำไย" loading="lazy">
+      <img src="images/real-tree.webp" alt="สวนลำไย" loading="lazy">
       <div class="cap">{L("สวนพันธมิตรในลำพูน", "A partner orchard in Lamphun")}</div>
     </div>
     <div>
@@ -598,8 +598,8 @@ products = f"""{phead("สินค้า", "Products", "ลำไย และ�
                         "Longan from partner orchards in Lamphun, Chiang Mai and Chanthaburi. Hand-picked, de-stemmed, washed, SO₂-treated to destination requirement, and into the cold room the same day.")}</p>
     </div>
     <div class="figs rv" style="margin-bottom:36px">
-      <figure><img src="images/real-branch.jpg" alt="พวงลำไยสดบนต้น" loading="lazy"></figure>
-      <figure><img src="images/real-crates1.jpg" alt="ลำไยคัดเกรดลงตะกร้า" loading="lazy"></figure>
+      <figure><img src="images/real-branch.webp" alt="พวงลำไยสดบนต้น" loading="lazy"></figure>
+      <figure><img src="images/real-crates1.webp" alt="ลำไยคัดเกรดลงตะกร้า" loading="lazy"></figure>
     </div>
     <div class="rv">
     <table class="spec">
