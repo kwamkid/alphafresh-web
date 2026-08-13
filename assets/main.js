@@ -79,11 +79,23 @@
   try { start = localStorage.getItem('af_lang') || 'en'; } catch (e) {}
   setLang(start);
 
-  /* ---------- sticky nav ---------- */
+  /* ---------- sticky nav ----------
+     scrollY is read inside requestAnimationFrame and the class is only written
+     when the state actually changes. Reading it straight from the scroll
+     handler forced the browser to recompute layout on every single event. */
   var nav = document.querySelector('.nav');
-  function onScroll() { if (nav) nav.classList.toggle('scrolled', window.scrollY > 40); }
-  onScroll();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  if (nav) {
+    var stuck = false, queued = false;
+    function applyNav() {
+      queued = false;
+      var next = window.scrollY > 40;
+      if (next !== stuck) { stuck = next; nav.classList.toggle('scrolled', stuck); }
+    }
+    window.addEventListener('scroll', function () {
+      if (!queued) { queued = true; requestAnimationFrame(applyNav); }
+    }, { passive: true });
+    applyNav();
+  }
 
   /* ---------- mobile menu ---------- */
   var burger = document.querySelector('.burger'), menu = document.getElementById('menu');
@@ -122,6 +134,7 @@
   /* ---------- hero: photo slider, handing over to video when it loads ---------- */
   var media = document.getElementById('heroMedia');
   if (!media) return;
+  var viewportW = window.innerWidth;
   var dots = document.getElementById('dots');
   var slides = [].slice.call(media.querySelectorAll('.hero-slide'));
   var vids = [].slice.call(media.querySelectorAll('.hero-vid'));
@@ -177,7 +190,7 @@
      full-bleed photos for a slider that sits behind the headline is a lot of
      mobile data for something almost nobody watches, and those downloads were
      crowding out everything else on the page. Wide screens keep the slider. */
-  var phone = window.innerWidth <= 760;
+  var phone = viewportW <= 760;
   if (phone) {
     if (dots) dots.style.display = 'none';
     clearTimeout(timer);
