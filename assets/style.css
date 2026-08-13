@@ -6,7 +6,7 @@
    ------------------------------------------------------------------ */
 
 :root{
-  --bg:#ffffff; --bg-soft:#f7f6f2; --ink:#1c1f1a; --ink-2:#5b625a; --ink-3:#8b918a;
+  --bg:#ffffff; --bg-soft:#f7f6f2; --ink:#1c1f1a; --ink-2:#5b625a; --ink-3:#6a706a;
   --line:#e6e4dd; --brand:#0e3d2d; --brand-soft:#eaf1ec; --leaf:#2e7d32;
   --gold:#c9942f; --gold-soft:#fbf4e6;
   --radius:14px; --maxw:1120px;
@@ -316,8 +316,10 @@ footer a{text-decoration:none;transition:.2s}
 footer a:hover{color:#fff}
 .flogo{margin-bottom:16px}
 .flogo img{height:100px;width:auto}
+/* .42 white on this green measured 3.95:1 — under the 4.5:1 WCAG AA floor.
+   .62 lands at 6.96:1 and still reads as quiet secondary text. */
 .fbot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:22px;font-size:12.5px;
-  color:rgba(255,255,255,.42)}
+  color:rgba(255,255,255,.62)}
 
 /* ---------- reveal on scroll ---------- */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}

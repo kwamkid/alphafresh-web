@@ -205,6 +205,28 @@ def stamp(path):
 CSS_V = stamp("assets/style.css")
 JS_V = stamp("assets/main.js")
 
+_ASSET_V = {}
+
+
+def stamp_assets(html):
+    """Images and videos are cached for 30 days. A file whose bytes change but
+    whose name does not would keep serving the stale copy from the edge for a
+    month, so every local media URL gets a content hash appended — a changed
+    file is then simply a different URL."""
+    import re
+
+    def sub(m):
+        path = m.group(1)
+        if path not in _ASSET_V:
+            try:
+                _ASSET_V[path] = stamp(path)
+            except FileNotFoundError:
+                _ASSET_V[path] = None
+        v = _ASSET_V[path]
+        return path if v is None else f"{path}?v={v}"
+
+    return re.sub(r"((?:images|videos)/[A-Za-z0-9._-]+\.(?:webp|png|ico|jpg|mp4))", sub, html)
+
 SITE = "https://alphafreshthailand.com"
 OG_IMAGE = f"{SITE}/{IMG['orchard']}"   # social cards need an absolute URL
 
@@ -272,7 +294,7 @@ def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th="", p
 </html>
 """
     with open(filename, "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(stamp_assets(html))
     print("wrote", filename, len(html), "bytes")
 
 
