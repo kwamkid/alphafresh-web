@@ -4,6 +4,9 @@
 /images/*
   Cache-Control: public, max-age=604800
 
+/videos/*
+  Cache-Control: public, max-age=2592000
+
 # Safe to cache hard: build.py appends a content hash to every asset URL,
 # so a changed file is always a new URL.
 /assets/*

@@ -5,14 +5,17 @@ import hashlib
 import os
 from translations import TR, MONTHS, META, GLOSSARY
 
+FONT_CSS = ("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600"
+            "&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap")
+
 MEDIA_HOST = "https://d2ol7oe51mr4n9.cloudfront.net"
 MEDIA = f"{MEDIA_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 CDN_HOST = "https://d8j0ntlcm91z4.cloudfront.net"
 CDN = f"{CDN_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 IMG = {
-    "orchard":    f"{MEDIA}/91e6c249-4e70-4a48-8bc8-f88a4446dc6d.webp",
+    "orchard":    "images/thai-longan-orchard-lamphun.webp",
     "hands":      f"{CDN}/hf_20260811_110015_e304dec3-f7da-41de-9a27-9fc365e45eb3_min.webp",
-    "shedfront":  f"{MEDIA}/4a5121f2-b099-474b-9223-3425b4fc478d.webp",
+    "shedfront":  "images/longan-packing-house-lamphun.webp",
     "sorting":    f"{CDN}/hf_20260811_114420_3a339d7e-719c-4a9d-b678-feaeee3a3a9d_min.webp",
     "qc":         f"{CDN}/hf_20260811_114420_8193e3ed-9d2b-4ef2-abc2-fc591f266d18_min.webp",
     "cold":       f"{CDN}/hf_20260811_114420_71d6a95f-de45-4523-b6b9-4876e7e4b8c2_min.webp",
@@ -25,10 +28,10 @@ IMG = {
 # Hero clips, re-encoded to 1280px H.264 without audio: 59.9 MB became 3.6 MB.
 # "mobile" is a 720px cut for phones.
 VID = {
-    "orchard": f"{MEDIA}/bcfffac1-b84f-49c4-89cf-100158c87261.mp4",
-    "shed":    f"{MEDIA}/fe4bdcf4-5a92-49ec-a72b-685eb684d825.mp4",
-    "line":    f"{MEDIA}/febe6d51-ae1e-439c-baac-83819580923a.mp4",
-    "mobile":  f"{MEDIA}/2b852071-ed08-42e2-aa23-5c2d8cbe3110.mp4",
+    "orchard": "videos/thai-longan-orchard.mp4",
+    "shed":    "videos/longan-packing-house.mp4",
+    "line":    "videos/longan-grading-line.mp4",
+    "mobile":  "videos/thai-longan-orchard-mobile.mp4",
 }
 
 NAV = [
@@ -203,7 +206,7 @@ CSS_V = stamp("assets/style.css")
 JS_V = stamp("assets/main.js")
 
 SITE = "https://alphafreshthailand.com"
-OG_IMAGE = IMG["orchard"]
+OG_IMAGE = f"{SITE}/{IMG['orchard']}"   # social cards need an absolute URL
 
 
 def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th="", preload=""):
@@ -246,9 +249,13 @@ def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th="", p
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="{MEDIA_HOST}">
 <link rel="dns-prefetch" href="{CDN_HOST}">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- The font sheet lives on another origin, so fetching it normally costs a DNS
+     lookup and a TLS handshake before anything can paint. Loading it as a
+     preload and promoting it to a stylesheet once it arrives keeps it off the
+     critical path; font-display:swap paints the text in a system face first. -->
+<link rel="preload" as="style" href="{FONT_CSS}" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{FONT_CSS}"></noscript>
 <link rel="icon" href="images/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/style.css?v={CSS_V}">
@@ -415,9 +422,9 @@ SEASON_SECTION = f"""<section class="soft" id="season">
 # ============================================================ HOME
 home = f"""<header class="hero">
   <div class="hero-media" id="heroMedia">
-    <img class="hero-slide on" src="{IMG['orchard']}" alt="สวนลำไยภาคเหนือยามเช้า" fetchpriority="high">
-    <img class="hero-slide" data-src="images/real-branch.webp" alt="ลำไยสดบนต้น" decoding="async">
-    <img class="hero-slide" data-src="images/real-crates2.webp" alt="ลำไยคัดเกรดในตะกร้า" decoding="async">
+    <img class="hero-slide on" src="{IMG['orchard']}" alt="Longan orchard in Northern Thailand at sunrise" fetchpriority="high">
+    <img class="hero-slide" data-src="images/fresh-longan-on-the-branch.webp" alt="Fresh Thai longan hanging on the branch" decoding="async">
+    <img class="hero-slide" data-src="images/longan-export-crates.webp" alt="Hand-graded longan in export crates" decoding="async">
     <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['orchard']}" data-src-small="{VID['mobile']}"></video>
     <video class="hero-vid" muted playsinline preload="none" data-src="{VID['shed']}"></video>
     <video class="hero-vid" muted playsinline preload="none" data-src="{VID['line']}"></video>
@@ -450,7 +457,7 @@ home = f"""<header class="hero">
       </div>
     </div>
     <div class="split-media">
-      <img src="{IMG['shedfront']}" alt="โรงคัดลำไยของ Alpha Fresh" loading="lazy">
+      <img src="{IMG['shedfront']}" alt="Alpha Fresh longan packing house in Lamphun, Thailand" loading="lazy">
       <div class="cap">{L("โรงคัดลำไยของเรา จ.ลำพูน", "Our longan collection &amp; packing shed, Lamphun")}</div>
     </div>
   </div>
@@ -463,19 +470,19 @@ home = f"""<header class="hero">
       <h2>{L("ลำไยเป็นตัวหลัก และผลไม้ไทยอีก 3 ชนิดตามฤดู", "Longan first, and three more Thai fruits in season")}</h2>
     </div>
     <div class="grid-4 rv g2m">
-      <a class="card" href="products.html#longan"><img src="images/real-crates1.webp" alt="ลำไย" loading="lazy">
+      <a class="card" href="products.html#longan"><img src="images/graded-longan-in-crates.webp" alt="Fresh Thai longan for export" loading="lazy">
         <div class="card-b"><h3>{L("ลำไยสด", "Fresh longan")}</h3>
           <p>{L("อีดอ · ดอ · เบี้ยวเขียว · เกรด AA–C · ก.ค.–ก.ย. และนอกฤดู", "E-Daw · Daw · Biew Kiew · grades AA–C · Jul–Sep plus off-season")}</p>
           <span class="more">{L("ดูสเปกเต็ม", "Full specification")} {ARROW}</span></div></a>
-      <a class="card" href="products.html#durian"><img src="{IMG['durian']}" alt="ทุเรียน" loading="lazy">
+      <a class="card" href="products.html#durian"><img src="{IMG['durian']}" alt="Fresh Thai durian for export" loading="lazy">
         <div class="card-b"><h3>{L("ทุเรียนหมอนทอง", "Monthong durian")}</h3>
           <p>{L("ตัดแก่ 80–85% · เม.ย.–ส.ค.", "80–85% maturity · Apr–Aug")}</p>
           <span class="more">{L("ดูรายละเอียด", "See details")} {ARROW}</span></div></a>
-      <a class="card" href="products.html#mangosteen"><img src="{IMG['mangosteen']}" alt="มังคุด" loading="lazy">
+      <a class="card" href="products.html#mangosteen"><img src="{IMG['mangosteen']}" alt="Fresh Thai mangosteen for export" loading="lazy">
         <div class="card-b"><h3>{L("มังคุด", "Mangosteen")}</h3>
           <p>{L("ผิวมัน ขั้วเขียวสด · พ.ค.–ก.ย.", "Glossy rind, fresh calyx · May–Sep")}</p>
           <span class="more">{L("ดูรายละเอียด", "See details")} {ARROW}</span></div></a>
-      <a class="card" href="products.html#lychee"><img src="{IMG['lychee']}" alt="ลิ้นจี่" loading="lazy">
+      <a class="card" href="products.html#lychee"><img src="{IMG['lychee']}" alt="Fresh Thai lychee for export" loading="lazy">
         <div class="card-b"><h3>{L("ลิ้นจี่", "Lychee")}</h3>
           <p>{L("ฮงฮวย · จักรพรรดิ · เม.ย.–มิ.ย.", "Hong Huay · Chakrapad · Apr–Jun")}</p>
           <span class="more">{L("ดูรายละเอียด", "See details")} {ARROW}</span></div></a>
@@ -532,7 +539,7 @@ about = f"""{phead("เกี่ยวกับเรา", "About", "จาก�
       </ul>
     </div>
     <div class="split-media">
-      <img src="{IMG['shedfront']}" alt="โรงคัดลำไยของ Alpha Fresh" loading="lazy">
+      <img src="{IMG['shedfront']}" alt="Alpha Fresh longan packing house in Lamphun, Thailand" loading="lazy">
       <div class="cap">{L("โรงคัดลำไยของเรา จ.ลำพูน", "Our longan collection &amp; packing shed, Lamphun")}</div>
     </div>
   </div>
@@ -545,15 +552,15 @@ about = f"""{phead("เกี่ยวกับเรา", "About", "จาก�
       <h2>{L("สามอย่างที่เราไม่ยกให้ใครทำแทน", "Three things we do not hand to anyone else")}</h2>
     </div>
     <div class="grid-3 rv">
-      <div class="card"><img src="{IMG['sorting']}" alt="การคัดลำไยด้วยมือ" loading="lazy">
+      <div class="card"><img src="{IMG['sorting']}" alt="Hand-grading longan at the packing house" loading="lazy">
         <div class="card-b"><h3>{L("การคัดเกรด", "Grading")}</h3>
           <p>{L("คัดด้วยมือทุกล็อต แยกช่อที่ผลร่วงหรือผิวช้ำออกก่อนลงกล่อง ไม่ใช้สายพานคัดอัตโนมัติ เพราะล็อตเราไม่ใหญ่พอที่จะคุ้ม และมือคนแม่นกว่าในงานขนาดนี้",
                 "Every lot is graded by hand — loose or bruised clusters pulled before boxing. No automated grading line: our lots are not large enough to justify one, and at this scale hands are more accurate.")}</p></div></div>
-      <div class="card"><img src="{IMG['cold']}" alt="ห้องเย็น" loading="lazy">
+      <div class="card"><img src="{IMG['cold']}" alt="Cold room holding fresh longan before shipment" loading="lazy">
         <div class="card-b"><h3>{L("ห้องเย็น", "The cold room")}</h3>
           <p>{L("ผลไม้เข้าห้องเย็นในวันที่ตัด ไม่ค้างคืนกลางแจ้ง อุณหภูมิถูกบันทึกไว้ และถ้าผู้ซื้อขอ เราใส่ data logger ไปในตู้ให้ดูย้อนหลังได้",
                 "Fruit goes into the cold room on picking day — never left outside overnight. Temperatures are logged, and if the buyer asks we put a data logger in the container.")}</p></div></div>
-      <div class="card"><img src="{IMG['loading']}" alt="โหลดตู้" loading="lazy">
+      <div class="card"><img src="{IMG['loading']}" alt="Loading a refrigerated container for export" loading="lazy">
         <div class="card-b"><h3>{L("เอกสารและการโหลด", "Documents and loading")}</h3>
           <p>{L("ทีมเดิมที่เคยเคลียร์ของขาเข้าเป็นคนทำเอกสารขาออก เราอยู่ตอนโหลดตู้ทุกครั้ง และส่งรูปล็อตให้ผู้ซื้อดูก่อนปิดตู้",
                 "The same team that used to clear inbound shipments prepares the outbound papers. We are present at every loading, and send lot photos to the buyer before the container is sealed.")}</p></div></div>
@@ -564,7 +571,7 @@ about = f"""{phead("เกี่ยวกับเรา", "About", "จาก�
 <section>
   <div class="wrap split flip rv">
     <div class="split-media">
-      <img src="images/real-tree.webp" alt="สวนลำไย" loading="lazy">
+      <img src="images/longan-orchard-northern-thailand.webp" alt="GAP-certified longan orchard in Lamphun" loading="lazy">
       <div class="cap">{L("สวนพันธมิตรในลำพูน", "A partner orchard in Lamphun")}</div>
     </div>
     <div>
@@ -598,8 +605,8 @@ products = f"""{phead("สินค้า", "Products", "ลำไย และ�
                         "Longan from partner orchards in Lamphun, Chiang Mai and Chanthaburi. Hand-picked, de-stemmed, washed, SO₂-treated to destination requirement, and into the cold room the same day.")}</p>
     </div>
     <div class="figs rv" style="margin-bottom:36px">
-      <figure><img src="images/real-branch.webp" alt="พวงลำไยสดบนต้น" loading="lazy"></figure>
-      <figure><img src="images/real-crates1.webp" alt="ลำไยคัดเกรดลงตะกร้า" loading="lazy"></figure>
+      <figure><img src="images/fresh-longan-on-the-branch.webp" alt="A cluster of fresh Thai longan on the tree" loading="lazy"></figure>
+      <figure><img src="images/graded-longan-in-crates.webp" alt="Graded longan packed into export crates" loading="lazy"></figure>
     </div>
     <div class="rv">
     <table class="spec">
@@ -646,7 +653,7 @@ products = f"""{phead("สินค้า", "Products", "ลำไย และ�
       <h2>{L("ผลไม้ไทยตามฤดูกาล", "Seasonal Thai fruits")}</h2>
     </div>
     <div class="grid-3 rv">
-      <div class="card" id="durian"><img src="{IMG['durian']}" alt="ทุเรียนหมอนทอง" loading="lazy">
+      <div class="card" id="durian"><img src="{IMG['durian']}" alt="Monthong durian for export from Thailand" loading="lazy">
         <div class="card-b"><h3>{L("ทุเรียนหมอนทอง", "Monthong Durian")}</h3>
           <p>{L("ตัดแก่ 80–85% วัดเปอร์เซ็นต์น้ำหนักแห้งทุกล็อต ก่อนบรรจุห่อตาข่ายโฟมกันกระแทก", "Harvested at 80–85% maturity with dry-matter testing on every lot, then foam-netted against knocks.")}</p>
           <div class="meta">
@@ -654,7 +661,7 @@ products = f"""{phead("สินค้า", "Products", "ลำไย และ�
             <div><span>{L("แพ็ค", "Packing")}</span><span>{L("กล่อง 15–18 กก.", "15–18 kg carton")}</span></div>
             <div><span>{L("อุณหภูมิ", "Temp")}</span><span>13–15 °C</span></div>
           </div></div></div>
-      <div class="card" id="mangosteen"><img src="{IMG['mangosteen']}" alt="มังคุด" loading="lazy">
+      <div class="card" id="mangosteen"><img src="{IMG['mangosteen']}" alt="Fresh Thai mangosteen for export" loading="lazy">
         <div class="card-b"><h3>{L("มังคุด", "Mangosteen")}</h3>
           <p>{L("คัดผิวมัน ขั้วเขียวสด ไม่มียางไหล และไม่มีอาการเนื้อแก้วจากการกระแทก", "Selected for glossy rind and a fresh green calyx, with no gamboge staining or impact damage.")}</p>
           <div class="meta">
@@ -662,7 +669,7 @@ products = f"""{phead("สินค้า", "Products", "ลำไย และ�
             <div><span>{L("แพ็ค", "Packing")}</span><span>{L("กล่อง 5 / 10 กก.", "5 / 10 kg carton")}</span></div>
             <div><span>{L("อุณหภูมิ", "Temp")}</span><span>8–12 °C</span></div>
           </div></div></div>
-      <div class="card" id="lychee"><img src="{IMG['lychee']}" alt="ลิ้นจี่" loading="lazy">
+      <div class="card" id="lychee"><img src="{IMG['lychee']}" alt="Fresh Thai lychee for export" loading="lazy">
         <div class="card-b"><h3>{L("ลิ้นจี่", "Lychee")}</h3>
           <p>{L("พันธุ์ฮงฮวยและจักรพรรดิ ตัดเช้า แช่เย็นทันที เพราะลิ้นจี่เปลี่ยนสีเร็วที่สุดในบรรดาผลไม้ที่เราส่ง", "Hong Huay and Chakrapad, picked at dawn and chilled immediately — lychee browns faster than anything else we ship.")}</p>
           <div class="meta">
@@ -710,15 +717,15 @@ quality = f"""{phead("คุณภาพและการส่งออก", "
       <h2>{L("สิ่งที่เราการันตีได้ และสิ่งที่เรายังไม่การันตี", "What we can guarantee — and what we do not claim")}</h2>
     </div>
     <div class="grid-3 rv">
-      <div class="card"><img src="{IMG['sorting']}" alt="การคัดลำไยด้วยมือ" loading="lazy">
+      <div class="card"><img src="{IMG['sorting']}" alt="Hand-grading longan at the packing house" loading="lazy">
         <div class="card-b"><h3>{L("มาตรฐานการผลิต", "Production standards")}</h3>
           <p>{L("สวนพันธมิตรผ่าน GAP โรงคัดทำตามแนวทาง GMP และ HACCP มีบันทึกล็อตย้อนกลับถึงสวนได้", "Partner orchards are GAP-certified; the packing shed follows GMP and HACCP practice, with lot records traceable back to the orchard.")}</p>
           <div class="chips"><span class="chip">{G("GAP")}</span><span class="chip">{G("GMP")}</span><span class="chip">{G("HACCP")}</span><span class="chip gold">Traceable lot code</span></div></div></div>
-      <div class="card"><img src="{IMG['qc']}" alt="ตรวจคุณภาพผลไม้" loading="lazy">
+      <div class="card"><img src="{IMG['qc']}" alt="Quality inspection of export fruit" loading="lazy">
         <div class="card-b"><h3>{L("สารตกค้างและเอกสาร", "Residues &amp; certificates")}</h3>
           <p>{L("ส่งตรวจสารตกค้างตาม MRL ของปลายทาง — EU, จีน (GACC), ญี่ปุ่น — พร้อมใบรับรองสุขอนามัยพืชทุกชิปเมนต์", "Residue testing against destination MRLs — EU, China (GACC) and Japan — with a phytosanitary certificate on every shipment.")}</p>
           <div class="chips"><span class="chip">EU {G("MRL")}</span><span class="chip">{G("GACC")}</span><span class="chip">Japan MHLW</span><span class="chip gold">{G("Phytosanitary")}</span></div></div></div>
-      <div class="card"><img src="{IMG['cold']}" alt="ห้องเย็น" loading="lazy">
+      <div class="card"><img src="{IMG['cold']}" alt="Cold room holding fresh longan before shipment" loading="lazy">
         <div class="card-b"><h3>{L("ห่วงโซ่ความเย็น", "Cold chain")}</h3>
           <p>{L("เข้าห้องเย็นภายในวันที่ตัด บันทึกอุณหภูมิตลอดทาง ใส่ data logger ในตู้ตามคำขอ", "Into the cold room on picking day, temperature logged throughout, with a data logger placed in the container on request.")}</p>
           <div class="chips"><span class="chip">2–5 °C</span><span class="chip">RH 90–95%</span><span class="chip gold">Data logger</span></div></div></div>
