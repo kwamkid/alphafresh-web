@@ -7,22 +7,26 @@ from translations import TR, MONTHS, META, GLOSSARY
 
 CDN = "https://d8j0ntlcm91z4.cloudfront.net/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 IMG = {
-    "orchard":    f"{CDN}/hf_20260811_110015_a5b428e7-7883-4cb1-9cd3-5f63b3db2cce.png",
-    "hands":      f"{CDN}/hf_20260811_110015_e304dec3-f7da-41de-9a27-9fc365e45eb3.png",
-    "shedfront":  f"{CDN}/hf_20260811_215043_c5e588ce-d5d1-4d2f-ade1-878b15b04677.png",
-    "sorting":    f"{CDN}/hf_20260811_114420_3a339d7e-719c-4a9d-b678-feaeee3a3a9d.png",
-    "qc":         f"{CDN}/hf_20260811_114420_8193e3ed-9d2b-4ef2-abc2-fc591f266d18.png",
-    "cold":       f"{CDN}/hf_20260811_114420_71d6a95f-de45-4523-b6b9-4876e7e4b8c2.png",
-    "loading":    f"{CDN}/hf_20260811_114420_0779c7f0-58c0-4a41-9f2c-c5e4682101a8.png",
-    "longanpack": f"{CDN}/hf_20260811_052447_734999bf-1648-42c3-9893-7fe6b42e4d21.png",
-    "durian":     f"{CDN}/hf_20260811_052447_ae3da5d0-e8f7-4c95-a6a0-f2465b05da01.png",
-    "mangosteen": f"{CDN}/hf_20260811_052446_14008918-4bf0-4560-bca0-c6ac527c3109.png",
-    "lychee":     f"{CDN}/hf_20260811_052447_93f578de-ea79-4568-bc1c-225d66b3df2f.png",
+    "orchard":    f"{CDN}/hf_20260811_110015_a5b428e7-7883-4cb1-9cd3-5f63b3db2cce_min.webp",
+    "hands":      f"{CDN}/hf_20260811_110015_e304dec3-f7da-41de-9a27-9fc365e45eb3_min.webp",
+    "shedfront":  f"{CDN}/hf_20260811_215043_c5e588ce-d5d1-4d2f-ade1-878b15b04677_min.webp",
+    "sorting":    f"{CDN}/hf_20260811_114420_3a339d7e-719c-4a9d-b678-feaeee3a3a9d_min.webp",
+    "qc":         f"{CDN}/hf_20260811_114420_8193e3ed-9d2b-4ef2-abc2-fc591f266d18_min.webp",
+    "cold":       f"{CDN}/hf_20260811_114420_71d6a95f-de45-4523-b6b9-4876e7e4b8c2_min.webp",
+    "loading":    f"{CDN}/hf_20260811_114420_0779c7f0-58c0-4a41-9f2c-c5e4682101a8_min.webp",
+    "longanpack": f"{CDN}/hf_20260811_052447_734999bf-1648-42c3-9893-7fe6b42e4d21_min.webp",
+    "durian":     f"{CDN}/hf_20260811_052447_ae3da5d0-e8f7-4c95-a6a0-f2465b05da01_min.webp",
+    "mangosteen": f"{CDN}/hf_20260811_052446_14008918-4bf0-4560-bca0-c6ac527c3109_min.webp",
+    "lychee":     f"{CDN}/hf_20260811_052447_93f578de-ea79-4568-bc1c-225d66b3df2f_min.webp",
 }
+# Hero clips, re-encoded to 1280px H.264 without audio: 59.9 MB became 3.6 MB.
+# "mobile" is a 720px cut for phones.
+MEDIA = "https://d2ol7oe51mr4n9.cloudfront.net/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 VID = {
-    "orchard": f"{CDN}/hf_20260811_110328_255c2fe5-7a10-4db9-96cd-67b84f532fa2.mp4",
-    "shed":    f"{CDN}/hf_20260811_114431_12cc171f-b52f-4af8-ab59-0f5c83f9269c.mp4",
-    "line":    f"{CDN}/hf_20260811_110329_603d540b-cba1-4069-bc05-acdaf454e812.mp4",
+    "orchard": f"{MEDIA}/bcfffac1-b84f-49c4-89cf-100158c87261.mp4",
+    "shed":    f"{MEDIA}/fe4bdcf4-5a92-49ec-a72b-685eb684d825.mp4",
+    "line":    f"{MEDIA}/febe6d51-ae1e-439c-baac-83819580923a.mp4",
+    "mobile":  f"{MEDIA}/2b852071-ed08-42e2-aa23-5c2d8cbe3110.mp4",
 }
 
 NAV = [
@@ -304,19 +308,19 @@ SEASON = [
 ]
 # Square catalogue shots, one per fruit, keyed to the SEASON rows below.
 FRUIT_PIC = {
-    "Longan":              f"{CDN}/hf_20260812_073051_0052cde6-5532-415a-84c1-762d16808c7d.png",
-    "Durian":              f"{CDN}/hf_20260812_073051_a1bb181a-558a-409f-b7d0-3727b1198521.png",
-    "Mangosteen":          f"{CDN}/hf_20260812_073052_6de7ee00-b50f-4347-ac37-6b43c628305d.png",
-    "Lychee":              f"{CDN}/hf_20260812_073051_91456ac4-10aa-46be-81f4-bac2db66bca7.png",
-    "Rambutan":            f"{CDN}/hf_20260812_073052_fc3a13c8-5ae7-49b2-9abc-6f2975795c3d.png",
-    "Longkong":            f"{CDN}/hf_20260812_073052_182bd563-65e1-4f24-ae13-8948b5b95e48.png",
-    "Mango (Nam Dok Mai)": f"{CDN}/hf_20260812_073051_4c63f0cd-521b-4da6-83ba-ea1dc6dd9bd4.png",
-    "Pomelo":              f"{CDN}/hf_20260812_073052_5dd794fb-c71b-4e0f-8bb7-069c3226157c.png",
-    "Dragon fruit":        f"{CDN}/hf_20260812_073052_17ab8e20-6110-479e-af87-f81b0ebc877e.png",
-    "Jackfruit":           f"{CDN}/hf_20260812_073052_becea2ff-29fb-4fe1-8931-51308b0380d2.png",
-    "Pineapple":           f"{CDN}/hf_20260812_073052_79ffe642-2041-4b81-ac57-a67f0823b62d.png",
-    "Young coconut":       f"{CDN}/hf_20260812_073051_1923ce00-e752-438e-a9ab-7c7ea9e09126.png",
-    "Sweet tamarind":      f"{CDN}/hf_20260812_073237_5843bb4e-8abf-434f-9a5c-c9420bec6777.png",
+    "Longan":              f"{CDN}/hf_20260812_073051_0052cde6-5532-415a-84c1-762d16808c7d_min.webp",
+    "Durian":              f"{CDN}/hf_20260812_073051_a1bb181a-558a-409f-b7d0-3727b1198521_min.webp",
+    "Mangosteen":          f"{CDN}/hf_20260812_073052_6de7ee00-b50f-4347-ac37-6b43c628305d_min.webp",
+    "Lychee":              f"{CDN}/hf_20260812_073051_91456ac4-10aa-46be-81f4-bac2db66bca7_min.webp",
+    "Rambutan":            f"{CDN}/hf_20260812_073052_fc3a13c8-5ae7-49b2-9abc-6f2975795c3d_min.webp",
+    "Longkong":            f"{CDN}/hf_20260812_073052_182bd563-65e1-4f24-ae13-8948b5b95e48_min.webp",
+    "Mango (Nam Dok Mai)": f"{CDN}/hf_20260812_073051_4c63f0cd-521b-4da6-83ba-ea1dc6dd9bd4_min.webp",
+    "Pomelo":              f"{CDN}/hf_20260812_073052_5dd794fb-c71b-4e0f-8bb7-069c3226157c_min.webp",
+    "Dragon fruit":        f"{CDN}/hf_20260812_073052_17ab8e20-6110-479e-af87-f81b0ebc877e_min.webp",
+    "Jackfruit":           f"{CDN}/hf_20260812_073052_becea2ff-29fb-4fe1-8931-51308b0380d2_min.webp",
+    "Pineapple":           f"{CDN}/hf_20260812_073052_79ffe642-2041-4b81-ac57-a67f0823b62d_min.webp",
+    "Young coconut":       f"{CDN}/hf_20260812_073051_1923ce00-e752-438e-a9ab-7c7ea9e09126_min.webp",
+    "Sweet tamarind":      f"{CDN}/hf_20260812_073237_5843bb4e-8abf-434f-9a5c-c9420bec6777_min.webp",
 }
 
 MONTHS_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -410,7 +414,7 @@ home = f"""<header class="hero">
     <img class="hero-slide on" src="{IMG['orchard']}" alt="สวนลำไยภาคเหนือยามเช้า" fetchpriority="high">
     <img class="hero-slide" src="images/real-branch.jpg" alt="ลำไยสดบนต้น" loading="lazy">
     <img class="hero-slide" src="images/real-crates2.jpg" alt="ลำไยคัดเกรดในตะกร้า" loading="lazy">
-    <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['orchard']}"></video>
+    <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['orchard']}" data-src-small="{VID['mobile']}"></video>
     <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['shed']}"></video>
     <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['line']}"></video>
   </div>

@@ -150,6 +150,9 @@
     var small = window.innerWidth <= 760;
     var list = small ? vids.slice(0, 1) : vids;
     if (small) list[0].loop = true;
+    /* clips 2 and 3 only start downloading once clip 1 is on screen, so the
+       first paint competes with one file instead of three */
+    var queue = list.slice(1);
     var switched = false;
 
     function handOver(v) {
@@ -167,15 +170,17 @@
       }
     }
 
-    list.forEach(function (v, n) {
+    list.forEach(function (v) {
       v.addEventListener('ended', function () { if (mode === 'vid' && !small) go(i + 1); });
-      if (n === 0) {
-        v.addEventListener('canplay', function () { handOver(v); }, { once: true });
-        v.addEventListener('loadeddata', function () { handOver(v); }, { once: true });
-      }
-      v.src = v.dataset.src;
-      v.load();
     });
+    var first = list[0];
+    first.addEventListener('canplay', function () { handOver(first); }, { once: true });
+    first.addEventListener('loadeddata', function () { handOver(first); }, { once: true });
+    first.src = (small && first.dataset.srcSmall) ? first.dataset.srcSmall : first.dataset.src;
+    first.load();
+    first.addEventListener('playing', function () {
+      queue.forEach(function (v) { v.src = v.dataset.src; v.load(); });
+    }, { once: true });
   }
 
 })();
