@@ -16,6 +16,7 @@ TR = {
 "Target markets": ("目标市场", "الأسواق المستهدفة"),
 "Request a quote": ("索取报价", "اطلب عرض سعر"),
 "Request a quotation": ("索取报价", "اطلب عرض سعر"),
+"Get a quote": ("索取报价", "اطلب عرض سعر"),
 "See all products": ("查看全部产品", "عرض كل المنتجات"),
 "Alpha Fresh Co., Ltd. — fresh fruit import &amp; export. Lamphun, Thailand.":
   ("Alpha Fresh 有限公司 — 泰国南奔府鲜果进出口商。",

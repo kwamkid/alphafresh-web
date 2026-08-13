@@ -5,7 +5,8 @@ import hashlib
 import os
 from translations import TR, MONTHS, META, GLOSSARY
 
-CDN = "https://d8j0ntlcm91z4.cloudfront.net/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
+CDN_HOST = "https://d8j0ntlcm91z4.cloudfront.net"
+CDN = f"{CDN_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 IMG = {
     "orchard":    f"{CDN}/hf_20260811_110015_a5b428e7-7883-4cb1-9cd3-5f63b3db2cce_min.webp",
     "hands":      f"{CDN}/hf_20260811_110015_e304dec3-f7da-41de-9a27-9fc365e45eb3_min.webp",
@@ -21,7 +22,8 @@ IMG = {
 }
 # Hero clips, re-encoded to 1280px H.264 without audio: 59.9 MB became 3.6 MB.
 # "mobile" is a 720px cut for phones.
-MEDIA = "https://d2ol7oe51mr4n9.cloudfront.net/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
+MEDIA_HOST = "https://d2ol7oe51mr4n9.cloudfront.net"
+MEDIA = f"{MEDIA_HOST}/user_3FvAUpXpCnZUma0p4ZCgNFe1CGD"
 VID = {
     "orchard": f"{MEDIA}/bcfffac1-b84f-49c4-89cf-100158c87261.mp4",
     "shed":    f"{MEDIA}/fe4bdcf4-5a92-49ec-a72b-685eb684d825.mp4",
@@ -204,7 +206,7 @@ SITE = "https://alphafreshthailand.com"
 OG_IMAGE = IMG["orchard"]
 
 
-def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th=""):
+def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th="", preload=""):
     """Titles and descriptions are English by default (the site's default language);
     main.js swaps them to the Thai versions when the visitor picks TH."""
     body_class = ' class="solid-nav"' if solid_nav else ""
@@ -244,11 +246,13 @@ def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th=""):
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="{CDN_HOST}">
+<link rel="dns-prefetch" href="{MEDIA_HOST}">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="icon" href="images/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/style.css?v={CSS_V}">
-<script type="application/ld+json">{SCHEMA}</script>
+{preload}<script type="application/ld+json">{SCHEMA}</script>
 </head>
 <body{body_class}>
 
@@ -412,11 +416,11 @@ SEASON_SECTION = f"""<section class="soft" id="season">
 home = f"""<header class="hero">
   <div class="hero-media" id="heroMedia">
     <img class="hero-slide on" src="{IMG['orchard']}" alt="สวนลำไยภาคเหนือยามเช้า" fetchpriority="high">
-    <img class="hero-slide" src="images/real-branch.jpg" alt="ลำไยสดบนต้น" loading="lazy">
-    <img class="hero-slide" src="images/real-crates2.jpg" alt="ลำไยคัดเกรดในตะกร้า" loading="lazy">
+    <img class="hero-slide" data-src="images/real-branch.jpg" alt="ลำไยสดบนต้น" decoding="async">
+    <img class="hero-slide" data-src="images/real-crates2.jpg" alt="ลำไยคัดเกรดในตะกร้า" decoding="async">
     <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['orchard']}" data-src-small="{VID['mobile']}"></video>
-    <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['shed']}"></video>
-    <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['line']}"></video>
+    <video class="hero-vid" muted playsinline preload="none" data-src="{VID['shed']}"></video>
+    <video class="hero-vid" muted playsinline preload="none" data-src="{VID['line']}"></video>
   </div>
   <div class="hero-in">
     <div class="eyebrow">Alpha Fresh Co., Ltd. — Lamphun, Thailand</div>
@@ -425,8 +429,8 @@ home = f"""<header class="hero">
     <p>{L("โรงคัดลำไยขนาดเล็กที่ดูแลเองทุกขั้นตอน คัดด้วยมือ เก็บความเย็นทันที และส่งออกพร้อมเอกสารครบ — ทุเรียน มังคุด ลิ้นจี่ ตามฤดูกาล",
           "A small, hands-on packing house in Northern Thailand. Hand-graded, chilled within hours, and shipped with complete export paperwork — plus durian, mangosteen and lychee in season.")}</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="contact.html">{L("ขอใบเสนอราคา", "Request a quotation")} {ARROW}</a>
-      <a class="btn btn-ghost" href="products.html">{L("ดูสินค้าและสเปก", "Products &amp; specifications")}</a>
+      <a class="btn btn-primary" href="contact.html"><span class="lbl-lg">{L("ขอใบเสนอราคา", "Request a quotation")}</span><span class="lbl-sm">{L("ขอราคา", "Get a quote")}</span> {ARROW}</a>
+      <a class="btn btn-ghost" href="products.html"><span class="lbl-lg">{L("ดูสินค้าและสเปก", "Products &amp; specifications")}</span><span class="lbl-sm">{L("ดูสินค้า", "Products")}</span></a>
     </div>
   </div>
   <div class="hero-dots" id="dots"></div>
@@ -831,6 +835,7 @@ page("index.html",
      "Thai Longan Exporter | Alpha Fresh, Lamphun Thailand",
      "Alpha Fresh exports hand-graded fresh longan from Lamphun, Thailand, plus durian, mangosteen and lychee in season. GAP orchards, cold chain, FOB and CIF.",
      home, solid_nav=False,
+     preload=f'<link rel="preload" as="image" href="{IMG["orchard"]}" fetchpriority="high">\n',
      title_th="ผู้ส่งออกลำไยและผลไม้ไทย | บริษัท อัลฟ่า เฟรช จำกัด",
      desc_th="อัลฟ่า เฟรช ส่งออกลำไยสดคัดมือจากลำพูน พร้อมทุเรียน มังคุด ลิ้นจี่ตามฤดูกาล สวน GAP ห่วงโซ่ความเย็นครบ ส่งได้ทั้ง FOB และ CIF")
 page("about.html",

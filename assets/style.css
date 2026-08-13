@@ -195,6 +195,7 @@ section{padding:84px 0}
 
 /* ---------- buttons ---------- */
 .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.lbl-sm{display:none}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:99px;
   font-size:14.5px;font-weight:600;text-decoration:none;border:1px solid transparent;
   cursor:pointer;font-family:inherit;transition:.22s ease}
@@ -358,7 +359,12 @@ footer a:hover{color:#fff}
   .hero-in{padding:0 18px 44px}
   .hero h1 .script{font-size:1.16em;line-height:.95}
   .hero-dots{right:18px;bottom:18px}
-  .cta-row .btn{flex:1 1 auto;justify-content:center}
+  /* the two hero buttons stay side by side; the labels shorten instead of wrapping */
+  .hero .cta-row{flex-wrap:nowrap;gap:10px}
+  .hero .cta-row .btn{flex:1 1 0;min-width:0;justify-content:center;
+                      padding-left:12px;padding-right:12px;font-size:.93rem;white-space:nowrap}
+  .hero .cta-row .lbl-lg{display:none}
+  .hero .cta-row .lbl-sm{display:inline}
   .phead{padding:104px 0 40px}
   section{padding:52px 0}
   .sec-head{margin-bottom:30px}

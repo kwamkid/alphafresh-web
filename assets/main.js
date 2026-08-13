@@ -22,8 +22,26 @@
     DESC[l] = meta('description-' + l) || DESC.en;
   });
 
+  /* The Chinese and Arabic webfonts are large and most visitors never see
+     them, so they are only fetched the first time someone picks that
+     language rather than blocking the first paint for everybody. */
+  var FONT = {
+    zh: 'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap',
+    ar: 'https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&display=swap'
+  };
+  var fontDone = {};
+  function loadFont(l) {
+    if (!FONT[l] || fontDone[l]) return;
+    fontDone[l] = true;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = FONT[l];
+    document.head.appendChild(link);
+  }
+
   function setLang(l) {
     if (LANGS.indexOf(l) === -1) l = 'en';
+    loadFont(l);
     root.lang = l;
     root.dataset.lang = l;
     root.dir = l === 'ar' ? 'rtl' : 'ltr';       /* Arabic reads right to left */
@@ -136,7 +154,6 @@
     if (mode === 'img') timer = setTimeout(function () { go(i + 1); }, 6000);
   }
   paint();
-  timer = setTimeout(function () { go(1); }, 6000);
 
   /* Video plays on phones too. On a narrow screen only the first clip is
      fetched and looped — three clips would be a lot of mobile data for a
@@ -145,6 +162,24 @@
      The photo slider is only dismissed once a clip has actually started
      playing. iOS refuses autoplay in Low Power Mode, and swapping first would
      leave the hero blank. */
+  /* Slides 2 and 3 are not visible for the first six seconds, so they wait
+     until the page has finished loading. Nothing competes with the hero
+     image, which is what Google measures as the Largest Contentful Paint. */
+  function afterLoad(fn) {
+    function go() {
+      if (window.requestIdleCallback) window.requestIdleCallback(fn, { timeout: 1500 });
+      else setTimeout(fn, 200);
+    }
+    if (document.readyState === 'complete') go();
+    else window.addEventListener('load', go, { once: true });
+  }
+  afterLoad(function () {
+    slides.forEach(function (s) { if (s.dataset.src) s.src = s.dataset.src; });
+    /* start cycling only once there is a second photo to cycle to */
+    clearTimeout(timer);
+    timer = setTimeout(function () { go(i + 1); }, 6000);
+  });
+
   var saveData = navigator.connection && navigator.connection.saveData === true;
   if (!reduce && !saveData) {
     var small = window.innerWidth <= 760;
@@ -176,8 +211,12 @@
     var first = list[0];
     first.addEventListener('canplay', function () { handOver(first); }, { once: true });
     first.addEventListener('loadeddata', function () { handOver(first); }, { once: true });
-    first.src = (small && first.dataset.srcSmall) ? first.dataset.srcSmall : first.dataset.src;
-    first.load();
+    /* The video only starts downloading once the page itself has loaded, so
+       the hero photo gets the whole connection to itself first. */
+    afterLoad(function () {
+      first.src = (small && first.dataset.srcSmall) ? first.dataset.srcSmall : first.dataset.src;
+      first.load();
+    });
     first.addEventListener('playing', function () {
       queue.forEach(function (v) { v.src = v.dataset.src; v.load(); });
     }, { once: true });
