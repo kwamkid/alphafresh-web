@@ -1,6 +1,7 @@
 # Alpha Fresh — static site generator.
 # Keeps the nav, footer and <head> identical across every page.
 # Run:  python3 build.py
+import hashlib
 import os
 from translations import TR, MONTHS, META, GLOSSARY
 
@@ -180,6 +181,21 @@ BAND = f"""<div class="band">
 SCHEMA = """{"@context":"https://schema.org","@type":"Organization","name":"Alpha Fresh Co., Ltd.","alternateName":"บริษัท อัลฟ่า เฟรช จำกัด","url":"https://alphafreshthailand.com/","description":"Thai fruit importer turned exporter. Fresh longan, durian, mangosteen and lychee from GAP-certified orchards in Northern Thailand.","address":{"@type":"PostalAddress","addressRegion":"Lamphun","addressCountry":"TH"},"email":"alphafreshthailand@gmail.com","telephone":"+66-89-894-9491","contactPoint":{"@type":"ContactPoint","telephone":"+66-89-894-9491","email":"alphafreshthailand@gmail.com","contactType":"sales","availableLanguage":["th","en"],"areaServed":"Worldwide"}}"""
 
 
+def stamp(path):
+    """Short content hash, appended to asset URLs.
+
+    _headers tells browsers to keep /assets/* for a week, which is what we want
+    — but only as long as a changed file arrives under a new URL. Without this
+    a visitor who has been to the site keeps the old stylesheet until the cache
+    expires, and sees a half-broken page.
+    """
+    with open(path, "rb") as f:
+        return hashlib.md5(f.read()).hexdigest()[:8]
+
+
+CSS_V = stamp("assets/style.css")
+JS_V = stamp("assets/main.js")
+
 SITE = "https://alphafreshthailand.com"
 OG_IMAGE = IMG["orchard"]
 
@@ -227,7 +243,7 @@ def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th=""):
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" href="images/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/style.css?v={CSS_V}">
 <script type="application/ld+json">{SCHEMA}</script>
 </head>
 <body{body_class}>
@@ -237,7 +253,7 @@ def page(filename, title, desc, body, solid_nav=True, title_th="", desc_th=""):
 {body}
 
 {FOOTER}
-<script src="assets/main.js"></script>
+<script src="assets/main.js?v={JS_V}"></script>
 </body>
 </html>
 """
@@ -394,9 +410,9 @@ home = f"""<header class="hero">
     <img class="hero-slide on" src="{IMG['orchard']}" alt="สวนลำไยภาคเหนือยามเช้า" fetchpriority="high">
     <img class="hero-slide" src="images/real-branch.jpg" alt="ลำไยสดบนต้น" loading="lazy">
     <img class="hero-slide" src="images/real-crates2.jpg" alt="ลำไยคัดเกรดในตะกร้า" loading="lazy">
-    <video class="hero-vid" muted playsinline preload="none" data-src="{VID['orchard']}"></video>
-    <video class="hero-vid" muted playsinline preload="none" data-src="{VID['shed']}"></video>
-    <video class="hero-vid" muted playsinline preload="none" data-src="{VID['line']}"></video>
+    <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['orchard']}"></video>
+    <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['shed']}"></video>
+    <video class="hero-vid" muted playsinline preload="none" poster="{IMG['orchard']}" data-src="{VID['line']}"></video>
   </div>
   <div class="hero-in">
     <div class="eyebrow">Alpha Fresh Co., Ltd. — Lamphun, Thailand</div>

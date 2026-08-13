@@ -499,5 +499,15 @@ html[dir="rtl"] .tip{text-align:right}
 .qcard:has(.term) img{border-radius:var(--radius) var(--radius) 0 0}
 
 @media(max-width:640px){
-  .tip{width:min(260px,84vw);font-size:12.5px}
+  /* On a phone the bubble becomes a strip pinned to the bottom of the screen.
+     An absolutely positioned bubble next to the word sticks out past the right
+     edge and makes the whole page scroll sideways, even while hidden — a fixed
+     element cannot widen the page. */
+  .tip{position:fixed;left:14px;right:14px;bottom:14px;top:auto;width:auto;
+    transform:translateY(8px);font-size:13px;padding:14px 16px;
+    box-shadow:0 -6px 30px rgba(0,0,0,.28)}
+  .tip::after{display:none}
+  .term:hover .tip,.term:focus .tip,.term:focus-within .tip{transform:translateY(0)}
+  .stat .tip,.mkc .tip{left:14px;transform:translateY(8px)}
+  .stat .term:hover .tip,.stat .term:focus .tip{transform:translateY(0)}
 }

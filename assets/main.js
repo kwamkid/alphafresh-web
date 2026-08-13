@@ -140,24 +140,39 @@
 
   /* Video plays on phones too. On a narrow screen only the first clip is
      fetched and looped — three clips would be a lot of mobile data for a
-     background that is mostly hidden behind the headline anyway. */
+     background that is mostly hidden behind the headline anyway.
+
+     The photo slider is only dismissed once a clip has actually started
+     playing. iOS refuses autoplay in Low Power Mode, and swapping first would
+     leave the hero blank. */
   var saveData = navigator.connection && navigator.connection.saveData === true;
   if (!reduce && !saveData) {
     var small = window.innerWidth <= 760;
     var list = small ? vids.slice(0, 1) : vids;
-    if (small) { vids[0].loop = true; }
+    if (small) list[0].loop = true;
     var switched = false;
-    list.forEach(function (v) {
+
+    function handOver(v) {
+      if (switched) return;
+      var p = v.play();
+      if (p && p.then) {
+        p.then(function () {
+          switched = true;
+          mode = 'vid'; i = 0; vids = list;
+          media.classList.add('video-on');
+          if (small && dots) dots.style.display = 'none';
+          clearTimeout(timer);
+          paint();
+        }).catch(function () { /* autoplay blocked — keep the photos */ });
+      }
+    }
+
+    list.forEach(function (v, n) {
       v.addEventListener('ended', function () { if (mode === 'vid' && !small) go(i + 1); });
-      v.addEventListener('canplay', function () {
-        if (switched) return;
-        switched = true;
-        mode = 'vid'; i = 0;
-        vids = list;                       /* the dots follow whatever is loaded */
-        media.classList.add('video-on');
-        if (small && dots) dots.style.display = 'none';
-        paint();
-      }, { once: true });
+      if (n === 0) {
+        v.addEventListener('canplay', function () { handOver(v); }, { once: true });
+        v.addEventListener('loadeddata', function () { handOver(v); }, { once: true });
+      }
       v.src = v.dataset.src;
       v.load();
     });
